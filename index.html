@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>G-VOLUTION - Consultoría de Transformación Estratégica y Digital</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        html {
+            scroll-behavior: smooth; 
+        }
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: #050a14; 
+            color: #E0E0E0; 
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Montserrat', sans-serif;
+            color: #FFFFFF; 
+        }
+        .hero-bg {
+            background-image: url('http://googleusercontent.com/image_generation_content/2'); 
+            background-size: cover;
+            background-position: center;
+        }
+        .accent-color {
+            color: #00AEEF; 
+        }
+        .accent-bg {
+            background-color: #00AEEF;
+        }
+        .dark-section-bg {
+            background-color: #0F172A; 
+        }
+        .light-section-bg {
+            background-color: #FFFFFF; 
+        }
+        .light-section-bg h2, .light-section-bg h3, .light-section-bg h4, .light-section-bg p, .light-section-bg label, .light-section-bg ul li {
+            color: #1E293B; 
+        }
+        .light-section-bg .accent-color { 
+             color: #00AEEF;
+        }
+         .light-section-bg .card-bg {
+            background-color: #F8FAFC; 
+            border: 1px solid #E2E8F0; 
+        }
+        .light-section-bg .card-bg .service-card-main-content > p { 
+            color: #475569; 
+        }
+        .card-bg {
+             background-color: #1E293B; 
+        }
+        #mobile-menu {
+            transition: transform 0.3s ease-in-out;
+        }
+        .menu-open {
+            transform: translateX(0%);
+        }
+        .menu-closed {
+            transform: translateX(-100%);
+        }
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .icon-style { 
+            width: 48px;
+            height: 48px;
+            margin-bottom: 1rem;
+            stroke-width: 1.5; 
+        }
+        .pillar-icon svg, .service-icon svg {
+            width: 40px; 
+            height: 40px;
+            margin-bottom: 1rem;
+            color: #00AEEF; 
+        }
+         .light-section-bg .pillar-icon svg, .light-section-bg .service-icon svg {
+             color: #00AEEF;
+        }
+        .nav-button-effect {
+            padding: 0.5rem 0.75rem; 
+            border-radius: 0.375rem; 
+            transition: background-color 0.2s, color 0.2s, box-shadow 0.2s; 
+        }
+        .nav-button-effect:hover {
+            background-color: rgba(255, 255, 255, 0.05); 
+            color: #FFFFFF;
+        }
+        .active-nav-link { 
+            color: #00AEEF !important; 
+            font-weight: 700; 
+            background-color: rgba(0, 174, 239, 0.1);
+        }
+        #ia-suggestions-output {
+            min-height: 150px; 
+            text-align: left; 
+            background-color: #162B44; 
+            border-radius: 0.5rem; 
+            padding: 1.5rem; 
+            margin-top: 2rem; 
+            border: 1px solid #2a3f5d; 
+        }
+        #ia-suggestions-output p {
+            font-size: 0.95rem; 
+            line-height: 1.7; 
+            margin-bottom: 1rem; 
+            color: #cbd5e1; 
+        }
+         #ia-suggestions-output strong { 
+            color: #38bdf8; 
+            font-weight: 600;
+         }
+        .loader {
+            border: 4px solid #374151; 
+            border-top: 4px solid #00AEEF;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .service-card {
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex; 
+            flex-direction: column; 
+        }
+        .service-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 10px 20px rgba(0, 174, 239, 0.1), 0 6px 6px rgba(0, 174, 239, 0.1);
+        }
+        .service-card-main-content {
+            flex-grow: 1; 
+        }
+        .service-details {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out, padding-top 0.5s ease-in-out, padding-bottom 0.5s ease-in-out;
+            padding-top: 0;
+            padding-bottom: 0;
+        }
+         .light-section-bg .service-details ul li p {
+            color: #334155; 
+        }
+        .service-details.expanded {
+            max-height: 600px; 
+            padding-top: 1rem; 
+            padding-bottom: 1rem; 
+        }
+        .service-detail-item {
+            font-size: 0.875rem; 
+            line-height: 1.5;   
+            margin-bottom: 0.5rem; 
+            padding-left: 1.5rem; 
+            position: relative;
+        }
+        .service-detail-item::before {
+            content: "✓"; 
+            color: #00AEEF; 
+            position: absolute;
+            left: 0.25rem; 
+            font-weight: bold;
+            font-size: 0.875rem; 
+        }
+        .expand-icon-container { 
+            text-align: center;
+            padding-top: 0.75rem; 
+            margin-top: auto; 
+        }
+        .expand-icon {
+            transition: transform 0.3s ease;
+            font-size: 1.75rem; 
+            font-weight: 300; 
+            line-height: 1; 
+            display: inline-block; 
+        }
+        .service-card.expanded .expand-icon { 
+            transform: rotate(45deg);
+            font-weight: 400; 
+        }
+    </style>
+</head>
+<body>
+    <nav class="fixed w-full z-50 transition-all duration-300 shadow-lg" style="background-color: rgba(15, 23, 42, 0.8); backdrop-filter: blur(10px);">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <div class="flex items-center flex-shrink-0"> 
+                    <a href="#hero" class="nav-link"> 
+                        <img class="h-14 sm:h-16 w-auto" src="https://i.postimg.cc/FKFmVqHy/Letras-blancas-2.png" alt="G-VOLUTION Logo">
+                    </a>
+                </div>
+
+                <div class="hidden md:flex flex-grow justify-center items-baseline space-x-1 lg:space-x-2 mx-4" id="desktop-nav-links"> 
+                    <a href="#hero" data-section="hero" class="nav-link text-gray-300 hover:text-white nav-button-effect text-sm font-medium">Inicio</a>
+                    <a href="#nosotros" data-section="nosotros" class="nav-link text-gray-300 hover:text-white nav-button-effect text-sm font-medium">Nosotros</a>
+                    <a href="#servicios" data-section="servicios" class="nav-link text-gray-300 hover:text-white nav-button-effect text-sm font-medium">Servicios</a>
+                    <a href="#proceso" data-section="proceso" class="nav-link text-gray-300 hover:text-white nav-button-effect text-sm font-medium">Proceso</a>
+                    <a href="#contacto" data-section="contacto" class="nav-link text-gray-300 hover:text-white nav-button-effect text-sm font-medium">Contacto</a>
+                </div>
+
+                <div class="hidden md:flex items-center flex-shrink-0">
+                     <a href="#ia-demo" data-section="ia-demo" class="nav-link accent-bg text-white hover:bg-blue-500 px-4 py-2 rounded-full text-sm font-medium transition duration-300 flex items-center justify-center text-center leading-snug">Inicia tu<br class="hidden sm:block"> Transformación</a>
+                </div>
+
+                <div class="md:hidden flex items-center"> 
+                    <button id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
+                        <span class="sr-only">Abrir menú principal</span>
+                        <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div id="mobile-menu" class="md:hidden fixed inset-0 bg-slate-900 bg-opacity-95 p-4 transform menu-closed z-40">
+            <div class="flex justify-end mb-4">
+                 <button id="mobile-menu-close-button" class="p-2 rounded-md text-gray-400 hover:text-white">
+                    <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            <a href="#hero" data-section="hero" class="nav-link block text-gray-300 hover:text-white px-3 py-2 rounded-md text-base font-medium">Inicio</a>
+            <a href="#nosotros" data-section="nosotros" class="nav-link block text-gray-300 hover:text-white px-3 py-2 rounded-md text-base font-medium">Nosotros</a>
+            <a href="#servicios" data-section="servicios" class="nav-link block text-gray-300 hover:text-white px-3 py-2 rounded-md text-base font-medium">Servicios</a>
+            <a href="#proceso" data-section="proceso" class="nav-link block text-gray-300 hover:text-white px-3 py-2 rounded-md text-base font-medium">Proceso</a>
+            <a href="#contacto" data-section="contacto" class="nav-link block text-gray-300 hover:text-white px-3 py-2 rounded-md text-base font-medium">Contacto</a>
+            <a href="#ia-demo" data-section="ia-demo" class="nav-link mt-4 block w-full text-center accent-bg text-white hover:bg-blue-500 px-4 py-3 rounded-full text-base font-medium transition duration-300">Inicia tu Transformación</a>
+        </div>
+    </nav>
+
+    <section id="hero" class="page-section hero-bg min-h-screen flex items-center justify-center pt-20">
+        <div class="absolute inset-0 bg-black opacity-60"></div> 
+        <div class="relative text-center p-8 z-10">
+            <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-[3.2rem] xl:text-[3.5rem] font-bold mb-6 leading-tight max-w-2xl mx-auto animate-fade-in-up" style="animation-delay: 0.2s;">
+                G-VOLUTION: Liderando la <span class="accent-color">Evolución Empresarial</span> con Inteligencia Artificial
+            </h1>
+            <p class="text-lg sm:text-xl md:text-2xl text-gray-200 mb-10 max-w-2xl mx-auto leading-relaxed animate-fade-in-up" style="animation-delay: 0.4s;">
+                Tu aliado en Transformación Estratégica y Digital. Potenciamos negocios que buscan evolucionar con soluciones innovadoras y personalizadas.
+            </p>
+            <a href="#servicios" data-section="servicios" class="nav-link accent-bg text-white text-lg font-semibold py-3 px-8 rounded-full hover:bg-blue-500 transition duration-300 transform hover:scale-105 animate-fade-in-up" style="animation-delay: 0.6s;">
+                Descubre Nuestras Soluciones
+            </a>
+        </div>
+    </section>
+
+    <section id="nosotros" class="page-section py-20 dark-section-bg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold mb-4">Conoce G-VOLUTION</h2>
+                <p class="text-lg text-gray-300 max-w-2xl mx-auto">Más que consultores, somos tus socios estratégicos en el camino hacia la innovación y el crecimiento sostenible.</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-12 items-center mb-16">
+                <div class="animate-fade-in-up" style="animation-delay: 0.2s;">
+                    <h3 class="text-2xl font-semibold mb-3 accent-color">Nuestra Misión y Visión</h3>
+                    <p class="text-gray-300 mb-4 leading-relaxed">
+                        <strong>Misión:</strong> Potenciar empresas con soluciones innovadoras y simplificar operaciones mediante digitalización estratégica. Transformamos desafíos en oportunidades de crecimiento.
+                    </p>
+                    <p class="text-gray-300 leading-relaxed">
+                        <strong>Visión:</strong> Ser el referente en consultoría estratégica digital y pioneros en el desarrollo de IA personalizada, convirtiéndonos en la primera opción para negocios que buscan evolucionar y liderar.
+                    </p>
+                </div>
+                <div class="animate-fade-in-up" style="animation-delay: 0.4s;">
+                    <img src="https://i.postimg.cc/j5BggwtH/Gemini-Generated-Image-pz7dj6pz7dj6pz7d.jpg" alt="Colaboración Estratégica y Tecnológica en G-VOLUTION" class="rounded-lg shadow-xl w-full object-cover h-full md:max-h-[350px] lg:max-h-[400px]">
+                </div>
+            </div>
+
+            <div>
+                <h3 class="text-2xl font-semibold text-center mb-10 accent-color">Nuestros Pilares Fundamentales</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="card-bg p-6 rounded-lg shadow-lg text-center animate-fade-in-up transform hover:scale-105 transition-transform duration-300" style="animation-delay: 0.2s;">
+                        <div class="pillar-icon mx-auto">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="icon-style"><path stroke-linecap="round" stroke-linejoin="round" d="M12 18v-5.25m0 0a6.01 6.01 0 001.5-.189m-1.5.189a6.01 6.01 0 01-1.5-.189m3.75 7.478a12.06 12.06 0 01-4.5 0m3.75 2.354a15.056 15.056 0 01-4.5 0m3.75-12.478a12.06 12.06 0 01-4.5 0m3.75 2.354a15.056 15.056 0 01-4.5 0M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" /></svg>
+                        </div>
+                        <h4 class="text-xl font-semibold mb-2 text-white">Innovación</h4>
+                        <p class="text-gray-400 text-sm">Soluciones de vanguardia y tecnologías emergentes.</p>
+                    </div>
+                     <div class="card-bg p-6 rounded-lg shadow-lg text-center animate-fade-in-up transform hover:scale-105 transition-transform duration-300" style="animation-delay: 0.3s;">
+                        <div class="pillar-icon mx-auto">
+                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="icon-style"><path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m5.058 0a5.971 5.971 0 01-.941 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z" /></svg>
+                        </div>
+                        <h4 class="text-xl font-semibold mb-2 text-white">Colaboración</h4>
+                        <p class="text-gray-400 text-sm">Sinergia para alcanzar resultados extraordinarios.</p>
+                    </div>
+                    <div class="card-bg p-6 rounded-lg shadow-lg text-center animate-fade-in-up transform hover:scale-105 transition-transform duration-300" style="animation-delay: 0.4s;">
+                        <div class="pillar-icon mx-auto">
+                           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="icon-style"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" /></svg>
+                        </div>
+                        <h4 class="text-xl font-semibold mb-2 text-white">Efectividad</h4>
+                        <p class="text-gray-400 text-sm">Compromiso con resultados tangibles y funcionales.</p>
+                    </div>
+                    <div class="card-bg p-6 rounded-lg shadow-lg text-center animate-fade-in-up transform hover:scale-105 transition-transform duration-300" style="animation-delay: 0.5s;"> 
+                        <div class="pillar-icon mx-auto">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="icon-style"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622A11.99 11.99 0 0018.402 6a11.959 11.959 0 01-1.008-.964M12 6.036A11.959 11.959 0 0112 2.75c0-1.094.242-2.108.656-3" /></svg> 
+                        </div>
+                        <h4 class="text-xl font-semibold mb-2 text-white">Integridad</h4>
+                        <p class="text-gray-400 text-sm">Ética y transparencia en todas nuestras operaciones.</p>
+                    </div>
+                    <div class="card-bg p-6 rounded-lg shadow-lg text-center animate-fade-in-up transform hover:scale-105 transition-transform duration-300" style="animation-delay: 0.6s;"> 
+                        <div class="pillar-icon mx-auto">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="icon-style"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" /></svg> 
+                        </div>
+                        <h4 class="text-xl font-semibold mb-2 text-white">Honestidad</h4>
+                        <p class="text-gray-400 text-sm">Comunicación clara para construir confianza.</p>
+                    </div>
+                    <div class="card-bg p-6 rounded-lg shadow-lg text-center animate-fade-in-up transform hover:scale-105 transition-transform duration-300" style="animation-delay: 0.7s;"> 
+                        <div class="pillar-icon mx-auto">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="icon-style"><path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" /></svg>
+                        </div>
+                        <h4 class="text-xl font-semibold mb-2 text-white">Adaptabilidad</h4>
+                        <p class="text-gray-400 text-sm">Adaptación ágil a las necesidades cambiantes.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="servicios" class="page-section py-20 light-section-bg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold mb-4">Nuestras Soluciones Estratégicas</h2>
+                <p class="text-lg max-w-2xl mx-auto">Explora cómo podemos impulsar tu negocio con tecnología y estrategias personalizadas.</p>
+            </div>
+            <div class="grid md:grid-cols-2 lg:grid-cols-2 gap-8 items-start auto-rows-min"> 
+                <div class="service-card card-bg p-8 rounded-xl shadow-xl animate-fade-in-up" style="animation-delay: 0.2s;">
+                    <div class="service-card-main-content flex-grow">
+                        <div class="service-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="icon-style"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 3v1.5M4.5 8.25H3m18 0h-1.5M4.5 12H3m18 0h-1.5m-15 3.75H3m18 0h-1.5M8.25 19.5V21M12 3v1.5m0 15V21m3.75-18v1.5m0 15V21m-9-7.5h12v-3h-12v3z" /></svg>
+                        </div>
+                        <h3 class="text-2xl font-semibold mb-3 accent-color">IA Personalizada</h3>
+                        <p>Desarrollamos soluciones de Inteligencia Artificial a medida para potenciar tus operaciones, optimizar procesos y tomar decisiones basadas en datos.</p>
+                    </div>
+                    <div class="expand-icon-container">
+                        <span class="expand-icon text-accent-color">+</span>
+                    </div>
+                    <div class="service-details">
+                        <ul class="mt-4 space-y-2">
+                            <li class="service-detail-item"><p>Desarrollo de Modelos de Machine Learning a Medida</p></li>
+                            <li class="service-detail-item"><p>Análisis Predictivo y Forecasting de Negocio</p></li>
+                            <li class="service-detail-item"><p>Soluciones de Procesamiento de Lenguaje Natural (NLP)</p></li>
+                            <li class="service-detail-item"><p>Implementación de Sistemas de Visión por Computadora</p></li>
+                            <li class="service-detail-item"><p>Optimización de Procesos Clave mediante Algoritmos de IA</p></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="service-card card-bg p-8 rounded-xl shadow-xl animate-fade-in-up" style="animation-delay: 0.3s;">
+                    <div class="service-card-main-content flex-grow">
+                        <div class="service-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="icon-style"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 7.5l3 2.25-3 2.25m4.5 0h3m-9 8.25h13.5A2.25 2.25 0 0021 18V6a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 6v12a2.25 2.25 0 002.25 2.25z" /></svg>
+                        </div>
+                        <h3 class="text-2xl font-semibold mb-3 accent-color">Transformación Digital</h3>
+                        <p>Te guiamos en la digitalización de tu negocio: desarrollo web/apps, automatización y marketing digital efectivo.</p>
+                    </div>
+                    <div class="expand-icon-container">
+                        <span class="expand-icon text-accent-color">+</span>
+                    </div>
+                    <div class="service-details">
+                        <ul class="mt-4 space-y-2">
+                            <li class="service-detail-item"><p>Auditoría Integral y Diagnóstico de Madurez Digital</p></li>
+                            <li class="service-detail-item"><p>Diseño y Desarrollo de Plataformas Web y Apps Centradas en el Usuario</p></li>
+                            <li class="service-detail-item"><p>Integración de Sistemas Empresariales y Software a Medida</p></li>
+                            <li class="service-detail-item"><p>Estrategias Avanzadas de Marketing Digital (SEO/SEM, Contenido)</p></li>
+                            <li class="service-detail-item"><p>Automatización Inteligente de Procesos (RPA y Workflows)</p></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="service-card card-bg p-8 rounded-xl shadow-xl animate-fade-in-up" style="animation-delay: 0.4s;">
+                    <div class="service-card-main-content flex-grow">
+                        <div class="service-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="icon-style"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3v11.25A2.25 2.25 0 006 16.5h12A2.25 2.25 0 0020.25 14.25V3m-15 0h1.5M5.625 3h12.75M3.75 7.5h1.5M5.625 7.5h12.75M3.75 12h1.5M5.625 12h12.75M10.5 16.5c0-1.14.9-2.04 2.012-2.04a2.012 2.012 0 012.012 2.04c0 1.14-.9 2.04-2.012 2.04A2.012 2.012 0 0110.5 16.5z" /></svg>
+                        </div>
+                        <h3 class="text-2xl font-semibold mb-3 accent-color">Consultoría Estratégica</h3>
+                        <p>Analizamos tu situación, definimos KPIs optimizados y diseñamos planes de acción para un crecimiento sostenible.</p>
+                    </div>
+                     <div class="expand-icon-container">
+                        <span class="expand-icon text-accent-color">+</span>
+                    </div>
+                    <div class="service-details">
+                        <ul class="mt-4 space-y-2">
+                            <li class="service-detail-item"><p>Análisis Profundo de Mercado, Competencia y Tendencias</p></li>
+                            <li class="service-detail-item"><p>Definición y Seguimiento de Indicadores Clave (KPIs)</p></li>
+                            <li class="service-detail-item"><p>Planificación Estratégica y Diseño de Roadmaps Tecnológicos</p></li>
+                            <li class="service-detail-item"><p>Gestión del Cambio Organizacional y Adopción Tecnológica</p></li>
+                            <li class="service-detail-item"><p>Diseño y Optimización de la Experiencia del Cliente (CX)</p></li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="service-card card-bg p-8 rounded-xl shadow-xl animate-fade-in-up" style="animation-delay: 0.5s;">
+                    <div class="service-card-main-content flex-grow">
+                        <div class="service-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="icon-style"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75M15 10.5a3 3 0 11-6 0 3 3 0 016 0zm3 0h.008v.008H18V10.5zm-12 0h.008v.008H6V10.5z" /></svg>
+                        </div>
+                        <h3 class="text-2xl font-semibold mb-3 accent-color">Servicios Financieros</h3>
+                        <p>Optimización de análisis financiero, KPIs y estrategias para la salud financiera y crecimiento de tu negocio.</p>
+                    </div>
+                    <div class="expand-icon-container">
+                        <span class="expand-icon text-accent-color">+</span>
+                    </div>
+                    <div class="service-details">
+                        <ul class="mt-4 space-y-2">
+                            <li class="service-detail-item"><p>Análisis Financiero Avanzado con Herramientas de BI</p></li>
+                            <li class="service-detail-item"><p>Modelado y Proyecciones Financieras Asistidas por IA</p></li>
+                            <li class="service-detail-item"><p>Optimización de Costos y Rentabilidad (Análisis de Datos)</p></li>
+                            <li class="service-detail-item"><p>Implementación de Dashboards Financieros Interactivos</p></li>
+                            <li class="service-detail-item"><p>Asesoría en Adopción de Tecnologías Financieras (FinTech)</p></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="proceso" class="page-section py-20 dark-section-bg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold mb-4">Nuestro Proceso Paso a Paso hacia el Éxito</h2>
+                <p class="text-lg text-gray-300 max-w-2xl mx-auto">Una metodología probada y transparente para garantizar resultados excepcionales en cada proyecto.</p>
+            </div>
+            <div class="relative">
+                <div class="hidden md:block absolute top-0 bottom-0 left-1/2 w-px bg-slate-700 transform -translate-x-1/2"></div>
+                <div class="space-y-12 md:space-y-0">
+                    <div class="md:grid md:grid-cols-2 md:gap-8 items-center animate-fade-in-up" style="animation-delay: 0.2s;">
+                        <div class="md:text-right md:pr-8 mb-4 md:mb-0">
+                            <div class="inline-flex items-center justify-center w-12 h-12 rounded-full accent-bg text-white font-bold text-xl mb-2">1</div>
+                            <h4 class="text-xl font-semibold text-white">Junta Preliminar</h4>
+                            <p class="text-gray-400">Comprensión inicial de tus necesidades y objetivos.</p>
+                        </div>
+                        <div class="md:pl-8">
+                            <img src="https://i.postimg.cc/909jmsrn/Gemini-Generated-Image-81jlm81jlm81jlm8.jpg" alt="Junta Preliminar" class="rounded-lg shadow-lg w-full">
+                        </div>
+                    </div>
+                     <div class="md:grid md:grid-cols-2 md:gap-8 items-center animate-fade-in-up" style="animation-delay: 0.3s;">
+                        <div class="md:order-2 md:text-left md:pl-8 mb-4 md:mb-0">
+                            <div class="inline-flex items-center justify-center w-12 h-12 rounded-full accent-bg text-white font-bold text-xl mb-2">2</div>
+                            <h4 class="text-xl font-semibold text-white">Identificación de Necesidades</h4>
+                            <p class="text-gray-400">Diagnóstico detallado y profundo de tu situación actual.</p>
+                        </div>
+                        <div class="md:order-1 md:pr-8">
+                           <img src="https://i.postimg.cc/90hL9kLS/Gemini-Generated-Image-aiasqkaiasqkaias.jpg" alt="Identificación de Necesidades" class="rounded-lg shadow-lg w-full">
+                        </div>
+                    </div>
+                    <div class="md:grid md:grid-cols-2 md:gap-8 items-center animate-fade-in-up" style="animation-delay: 0.4s;">
+                        <div class="md:text-right md:pr-8 mb-4 md:mb-0">
+                            <div class="inline-flex items-center justify-center w-12 h-12 rounded-full accent-bg text-white font-bold text-xl mb-2">3</div>
+                            <h4 class="text-xl font-semibold text-white">Propuesta de Solución</h4>
+                            <p class="text-gray-400">Estrategia y plan de acción personalizados para ti.</p>
+                        </div>
+                        <div class="md:pl-8">
+                            <img src="https://i.postimg.cc/fTHvWkQ1/Gemini-Generated-Image-ux419uux419uux41.jpg" alt="Propuesta de Solución" class="rounded-lg shadow-lg w-full">
+                        </div>
+                    </div>
+                    <div class="md:grid md:grid-cols-2 md:gap-8 items-center animate-fade-in-up" style="animation-delay: 0.5s;">
+                        <div class="md:order-2 md:text-left md:pl-8 mb-4 md:mb-0">
+                            <div class="inline-flex items-center justify-center w-12 h-12 rounded-full accent-bg text-white font-bold text-xl mb-2">4</div>
+                            <h4 class="text-xl font-semibold text-white">Inicio del Proyecto</h4>
+                            <p class="text-gray-400">Implementación efectiva de las soluciones acordadas.</p>
+                        </div>
+                        <div class="md:order-1 md:pr-8">
+                           <img src="https://i.postimg.cc/MpM1WDDj/Gemini-Generated-Image-g1pu0bg1pu0bg1pu.jpg" alt="Inicio del Proyecto" class="rounded-lg shadow-lg w-full">
+                        </div>
+                    </div>
+                     <div class="md:grid md:grid-cols-2 md:gap-8 items-center animate-fade-in-up" style="animation-delay: 0.6s;">
+                        <div class="md:text-right md:pr-8 mb-4 md:mb-0">
+                            <div class="inline-flex items-center justify-center w-12 h-12 rounded-full accent-bg text-white font-bold text-xl mb-2">5</div>
+                            <h4 class="text-xl font-semibold text-white">Juntas de Seguimiento</h4>
+                            <p class="text-gray-400">Comunicación constante y ajustes ágiles durante el proceso.</p>
+                        </div>
+                        <div class="md:pl-8">
+                            <img src="https://i.postimg.cc/nzHsQYv2/Gemini-Generated-Image-yov3niyov3niyov3.jpg" alt="Juntas de Seguimiento" class="rounded-lg shadow-lg w-full">
+                        </div>
+                    </div>
+                     <div class="md:grid md:grid-cols-2 md:gap-8 items-center animate-fade-in-up" style="animation-delay: 0.7s;">
+                        <div class="md:order-2 md:text-left md:pl-8 mb-4 md:mb-0">
+                            <div class="inline-flex items-center justify-center w-12 h-12 rounded-full accent-bg text-white font-bold text-xl mb-2">6</div>
+                            <h4 class="text-xl font-semibold text-white">Entrega y Capacitación</h4>
+                            <p class="text-gray-400">Puesta en marcha de la solución y formación de tu equipo.</p>
+                        </div>
+                        <div class="md:order-1 md:pr-8">
+                           <img src="https://i.postimg.cc/PxGh8tYM/Chat-GPT-Image-May-21-2025-02-49-18-PM.png" alt="Entrega y Capacitación" class="rounded-lg shadow-lg w-full">
+                        </div>
+                    </div>
+                    <div class="md:grid md:grid-cols-2 md:gap-8 items-center animate-fade-in-up" style="animation-delay: 0.8s;">
+                        <div class="md:text-right md:pr-8 mb-4 md:mb-0">
+                            <div class="inline-flex items-center justify-center w-12 h-12 rounded-full accent-bg text-white font-bold text-xl mb-2">7</div>
+                            <h4 class="text-xl font-semibold text-white">Soporte y Mantenimiento</h4>
+                            <p class="text-gray-400">Acompañamiento continuo post-implementación para tu tranquilidad.</p>
+                        </div>
+                        <div class="md:pl-8">
+                            <img src="https://i.postimg.cc/BQsqZQB5/Gemini-Generated-Image-izf37zizf37zizf3.jpg" alt="Soporte y Mantenimiento" class="rounded-lg shadow-lg w-full">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="ia-demo" class="page-section py-20 dark-section-bg hidden"> 
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl sm:text-4xl font-bold mb-4">Explora el Potencial de la IA: Obtén Perspectivas para Tu Negocio</h2>
+                <p class="text-lg text-gray-300 max-w-2xl mx-auto">¿Tienes un desafío empresarial o una idea innovadora? Completa los siguientes campos y deja que nuestro agente IA, GVOL, te ofrezca algunas perspectivas iniciales.</p>
+            </div>
+            <div class="max-w-2xl mx-auto card-bg p-8 sm:p-10 rounded-xl shadow-2xl">
+                <div class="space-y-6">
+                    <div>
+                        <label for="ia-nombre" class="block text-sm font-medium text-gray-300 mb-1">Tu Nombre <span class="text-red-500">*</span></label>
+                        <input type="text" name="ia-nombre" id="ia-nombre" required class="w-full px-4 py-2.5 rounded-lg bg-slate-700 text-white border border-slate-600 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none placeholder-gray-400" placeholder="Ej: Ana Pérez">
+                    </div>
+                    <div>
+                        <label for="ia-empresa" class="block text-sm font-medium text-gray-300 mb-1">Nombre de tu Empresa (Opcional)</label>
+                        <input type="text" name="ia-empresa" id="ia-empresa" class="w-full px-4 py-2.5 rounded-lg bg-slate-700 text-white border border-slate-600 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none placeholder-gray-400" placeholder="Ej: Flores ABC">
+                    </div>
+                    <div>
+                        <label for="ia-prompt" class="block text-sm font-medium text-gray-300 mb-2">Describe tu desafío o idea de negocio <span class="text-red-500">*</span></label>
+                        <textarea name="ia-prompt" id="ia-prompt" rows="4" required class="w-full px-4 py-2.5 rounded-lg bg-slate-700 text-white border border-slate-600 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none placeholder-gray-400" placeholder="Ej: Mis ventas online han bajado y no sé por qué..."></textarea>
+                    </div>
+                </div>
+                <div class="mt-8 text-center">
+                    <button id="generate-ia-ideas-button" class="accent-bg text-white text-lg font-semibold py-3 px-10 rounded-full hover:bg-blue-600 transition duration-300 transform hover:scale-105 flex items-center justify-center mx-auto">
+                        <span>Pregúntale a GVOL</span> 
+                    </button>
+                </div>
+                <div id="ia-loader" class="hidden loader mt-6"></div>
+                <div id="ia-suggestions-output" class="mt-8">
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="contacto" class="page-section py-20 light-section-bg"> 
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl sm:text-4xl font-bold mb-4">Inicia tu G-VOLUTION</h2>
+                 <p class="text-lg max-w-xl mx-auto">¿Listo para llevar tu empresa al siguiente nivel? Contáctanos hoy mismo para una consulta preliminar sin compromiso.</p>
+            </div>
+            <div class="max-w-2xl mx-auto bg-white p-8 sm:p-10 rounded-xl shadow-2xl border border-slate-200">
+                <form id="contactForm">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                        <div>
+                            <label for="nombre" class="block text-sm font-medium text-slate-700 mb-1">Nombre Completo</label>
+                            <input type="text" name="nombre" id="nombre" required class="w-full px-4 py-2.5 rounded-lg bg-slate-50 text-slate-900 border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none placeholder-slate-400" placeholder="Tu Nombre">
+                        </div>
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-slate-700 mb-1">Correo Electrónico</label>
+                            <input type="email" name="email" id="email" required class="w-full px-4 py-2.5 rounded-lg bg-slate-50 text-slate-900 border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none placeholder-slate-400" placeholder="tu@correo.com">
+                        </div>
+                    </div>
+                    <div class="mb-6">
+                        <label for="asunto" class="block text-sm font-medium text-slate-700 mb-1">Asunto</label>
+                        <input type="text" name="asunto" id="asunto" class="w-full px-4 py-2.5 rounded-lg bg-slate-50 text-slate-900 border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none placeholder-slate-400" placeholder="Ej: Consulta sobre IA Personalizada">
+                    </div>
+                    <div class="mb-8">
+                        <label for="mensaje" class="block text-sm font-medium text-slate-700 mb-1">Mensaje</label>
+                        <textarea name="mensaje" id="mensaje" rows="5" required class="w-full px-4 py-2.5 rounded-lg bg-slate-50 text-slate-900 border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none placeholder-slate-400" placeholder="Cuéntanos sobre tu proyecto o tus necesidades..."></textarea>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="accent-bg text-white text-lg font-semibold py-3 px-10 rounded-full hover:bg-blue-500 transition duration-300 transform hover:scale-105">
+                            Enviar Mensaje
+                        </button>
+                    </div>
+                </form>
+                <div id="form-message" class="mt-6 text-center"></div>
+                 <div class="mt-10 text-center text-slate-500">
+                    <p class="mb-2">O contáctanos directamente:</p>
+                    <p>Email: <a href="mailto:contacto@hazmiappstudio.com" class="accent-color hover:underline">contacto@hazmiappstudio.com</a></p>
+                    <p>Teléfono: <a href="tel:5552150020" class="accent-color hover:underline">55-5215-0020</a></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="dark-section-bg border-t border-slate-700 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-gray-400">
+            <img class="h-14 sm:h-16 w-auto mx-auto mb-4" src="https://i.postimg.cc/FKFmVqHy/Letras-blancas-2.png" alt="G-VOLUTION Logo Footer">
+            <p class="mb-2">&copy; <span id="currentYear"></span> G-VOLUTION. Todos los derechos reservados.</p>
+            <p class="text-sm mb-4">Consultoría de Transformación Estratégica y Digital.</p>
+            <div class="flex justify-center space-x-6 mb-4">
+                <a href="#" aria-label="Facebook de G-VOLUTION" class="text-gray-400 hover:text-white transition-colors">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd" /></svg>
+                </a>
+                <a href="#" aria-label="Instagram de G-VOLUTION" class="text-gray-400 hover:text-white transition-colors">
+                     <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M12 2.163c3.204 0 3.584.012 4.85.07 1.172.053 1.803.248 2.228.434.608.278.972.626 1.348 1.002.374.376.722.74 1.002 1.347.186.426.38.96.434 2.228.058 1.266.07 1.646.07 4.85s-.012 3.584-.07 4.85c-.053 1.172-.248 1.803-.434 2.228a3.975 3.975 0 01-1.002 1.348 3.975 3.975 0 01-1.348 1.002c-.426.186-.96.38-2.228.434-.928.048-1.273.064-3.728.064s-2.8-.016-3.728-.064c-1.268-.054-1.803-.248-2.228-.434a3.975 3.975 0 01-1.348-1.002 3.975 3.975 0 01-1.002-1.348c-.186-.426-.38-.96-.434-2.228C2.177 15.584 2.165 15.204 2.165 12s.012-3.584.07-4.85c.053-1.172.248-1.803.434-2.228.278-.608.626-.972 1.002-1.348S4.96 2.97 5.566 2.694c.426-.186.96-.38 2.228-.434C8.416 2.177 8.796 2.165 12 2.165zm0 1.802c-3.116 0-3.473.013-4.694.068-1.095.048-1.656.23-1.99.374a2.168 2.168 0 00-.952.951c-.144.334-.326.895-.374 1.99C3.94 7.523 3.926 7.88 3.926 12s.013 3.473.068 4.694c.048 1.095.23 1.656.374 1.99a2.168 2.168 0 00.951.952c.334.144.895.326 1.99.374 1.22.055 1.578.068 4.694.068s3.473-.013 4.694-.068c1.095-.048 1.656-.23 1.99-.374a2.168 2.168 0 00.952-.951c.144-.334.326.895.374-1.99.055-1.22.068-1.578.068-4.694s-.013-3.473-.068-4.694c-.048-1.095-.23-1.656-.374-1.99a2.168 2.168 0 00-.951-.952c-.334-.144-.895-.326-1.99-.374C15.473 3.98 15.116 3.965 12 3.965zm0 3.272a4.762 4.762 0 100 9.524 4.762 4.762 0 000-9.524zm0 7.723a3.012 3.012 0 110-6.024 3.012 3.012 0 010 6.024zM16.965 6.575a1.23 1.23 0 100 2.46 1.23 1.23 0 000-2.46z" clip-rule="evenodd" /></svg>
+                </a>
+                <a href="#" aria-label="LinkedIn de G-VOLUTION" class="text-gray-400 hover:text-white transition-colors">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                </a>
+            </div>
+            <p class="text-xs">Diseñado y Desarrollado con IA y Pasión por la Innovación.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Script para el menú móvil
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenuCloseButton = document.getElementById('mobile-menu-close-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const navLinksMobile = document.querySelectorAll('#mobile-menu a.nav-link');
+
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.remove('menu-closed');
+            mobileMenu.classList.add('menu-open');
+        });
+
+        mobileMenuCloseButton.addEventListener('click', () => {
+            mobileMenu.classList.remove('menu-open');
+            mobileMenu.classList.add('menu-closed');
+        });
+        
+        navLinksMobile.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.remove('menu-open');
+                mobileMenu.classList.add('menu-closed');
+            });
+        });
+
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+        const contactForm = document.getElementById('contactForm');
+        const formMessage = document.getElementById('form-message');
+
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault(); 
+            formMessage.textContent = 'Enviando mensaje...';
+            formMessage.className = 'mt-6 text-center text-yellow-400';
+
+            setTimeout(() => {
+                formMessage.textContent = '¡Mensaje enviado con éxito! Nos pondremos en contacto contigo pronto.';
+                formMessage.className = 'mt-6 text-center text-green-500';
+                contactForm.reset(); 
+            }, 1500);
+        });
+
+        // --- Script para navegación y visibilidad de secciones ---
+        const allPageSections = document.querySelectorAll('section[id]'); 
+        const desktopNavLinks = document.querySelectorAll('#desktop-nav-links a.nav-link');
+        const allNavLinks = document.querySelectorAll('.nav-link'); 
+        const navbarElement = document.querySelector('nav'); 
+        const iaDemoSectionGlobal = document.getElementById('ia-demo'); 
+
+        function setActiveLink(targetId) {
+            desktopNavLinks.forEach(link => {
+                link.classList.remove('active-nav-link');
+                const linkTarget = link.getAttribute('href') ? link.getAttribute('href').substring(1) : null;
+                if (linkTarget === targetId) {
+                    link.classList.add('active-nav-link');
+                }
+            });
+        }
+
+        function handleNavigation(targetId) {
+            let sectionToScrollTo = document.getElementById(targetId);
+
+            if (targetId === 'ia-demo') {
+                allPageSections.forEach(section => {
+                    if (section.id === 'ia-demo') {
+                        section.classList.remove('hidden');
+                    } else {
+                        section.classList.add('hidden');
+                    }
+                });
+                desktopNavLinks.forEach(link => link.classList.remove('active-nav-link')); 
+            } else {
+                allPageSections.forEach(section => {
+                    if (section.id === 'ia-demo') {
+                        section.classList.add('hidden');
+                    } else {
+                        section.classList.remove('hidden');
+                    }
+                });
+                setActiveLink(targetId); 
+            }
+            
+            if (sectionToScrollTo) {
+                 window.scrollTo({ top: sectionToScrollTo.offsetTop - navbarElement.offsetHeight, behavior: 'smooth' });
+            }
+        }
+
+        allNavLinks.forEach(link => {
+            link.addEventListener('click', function(event) {
+                event.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                handleNavigation(targetId);
+
+                if (mobileMenu.classList.contains('menu-open') && this.closest('#mobile-menu')) {
+                    mobileMenu.classList.remove('menu-open');
+                    mobileMenu.classList.add('menu-closed');
+                }
+            });
+        });
+        
+        let sectionScrollObserver;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            allPageSections.forEach(section => {
+                if (section.id === 'ia-demo') {
+                    section.classList.add('hidden');
+                } else {
+                    section.classList.remove('hidden'); 
+                }
+            });
+            if (iaDemoSectionGlobal.classList.contains('hidden')) {
+                setActiveLink('hero');
+            }
+
+            const staticRootMarginOptions = {
+                 root: null,
+                 rootMargin: '-40% 0px -40% 0px', // Valor estático
+                 threshold: 0.1 
+            };
+
+            sectionScrollObserver = new IntersectionObserver((entries, observer) => {
+                if (iaDemoSectionGlobal && iaDemoSectionGlobal.classList.contains('hidden')) { 
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            setActiveLink(entry.target.id);
+                        }
+                    });
+                }
+            }, staticRootMarginOptions);
+
+            allPageSections.forEach(section => {
+                if (section.id !== 'ia-demo') { 
+                    sectionScrollObserver.observe(section);
+                }
+            });
+        });
+        // --- Fin script de navegación ---
+
+
+        const animatedElements = document.querySelectorAll('.animate-fade-in-up');
+        const animationObserver = new IntersectionObserver((entries) => { 
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible'); 
+                    entry.target.style.animationPlayState = 'running';
+                    animationObserver.unobserve(entry.target); 
+                }
+            });
+        }, { threshold: 0.1 });
+
+        animatedElements.forEach(el => {
+            animationObserver.observe(el);
+        });
+
+        const navbar = document.querySelector('nav'); 
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.style.backgroundColor = 'rgba(15, 23, 42, 0.95)'; 
+                navbar.classList.add('shadow-xl');
+            } else {
+                navbar.style.backgroundColor = 'rgba(15, 23, 42, 0.8)'; 
+                navbar.classList.remove('shadow-xl');
+            }
+        });
+
+        // --- Script para la Demo IA con Gemini ---
+        const iaNombreInput = document.getElementById('ia-nombre');
+        const iaEmpresaInput = document.getElementById('ia-empresa');
+        const iaPromptTextarea = document.getElementById('ia-prompt');
+        const generateIdeasButton = document.getElementById('generate-ia-ideas-button');
+        const iaSuggestionsOutput = document.getElementById('ia-suggestions-output');
+        const iaLoader = document.getElementById('ia-loader');
+
+        generateIdeasButton.addEventListener('click', async () => {
+            const userName = iaNombreInput.value.trim();
+            const userCompany = iaEmpresaInput.value.trim();
+            const userProblem = iaPromptTextarea.value.trim();
+
+            if (!userName) {
+                iaSuggestionsOutput.innerHTML = '<p class="italic text-red-400">Por favor, ingresa tu nombre.</p>';
+                return;
+            }
+            if (!userProblem) {
+                iaSuggestionsOutput.innerHTML = '<p class="italic text-red-400">Por favor, describe tu desafío o idea.</p>';
+                return;
+            }
+
+            iaLoader.classList.remove('hidden');
+            iaSuggestionsOutput.innerHTML = '<p class="italic">GVOL está analizando tu consulta...</p>'; 
+            generateIdeasButton.disabled = true;
+            generateIdeasButton.classList.add('opacity-50', 'cursor-not-allowed');
+
+            const empresaContexto = userCompany ? `para ${userCompany}` : "para tu negocio"; 
+            const serviciosGvolution = ["IA Personalizada", "Transformación Digital", "Consultoría Estratégica", "Servicios Financieros"];
+
+            const systemInstruction = `Eres GVOL, un agente IA experto y amigable de G-VOLUTION, una consultoría de transformación estratégica y digital. El usuario te proporcionará su nombre, opcionalmente el nombre de su empresa, y una descripción de un desafío o idea de negocio.
+Tu tarea es responder en el siguiente formato JSON, asegurándote de que el nombre del agente sea "GVOL" (todo en mayúsculas) y que los nombres de los servicios de G-VOLUTION se mencionen sin ningún formato markdown (como **):
+1.  **saludoGvol**: Inicia con un saludo personalizado: "Hola [Nombre del usuario], mi nombre es GVOL y soy el agente IA de G-VOLUTION, ¡listo para ayudarte!".
+2.  **comprensionProblema**: Demuestra comprensión: "Entiendo que ${empresaContexto}, tu principal desafío o idea es [parafrasear o resumir brevemente el problema/idea del usuario en 1-2 frases concisas]."
+3.  **ideasGenerales**: Propón enfoques generales: "Para abordar esto, generalmente exploramos soluciones como [mencionar 1 o 2 ideas generales o áreas de oportunidad de alto nivel, sin entrar en detalles de la solución técnica específica todavía, y sin usar los nombres de los servicios de G-VOLUTION en esta parte]."
+4.  **conexionServicios**: Conecta con los servicios de G-VOLUTION: "Estas estrategias y enfoques son parte de lo que hacemos en G-VOLUTION a través de nuestros servicios. Por ejemplo, para lo que mencionas, nuestro servicio de [Nombre del Servicio Principal de G-VOLUTION más relevante, DEBE SER EXACTAMENTE UNO DE: ${serviciosGvolution.join(", ")}] nos permitiría [breve justificación de 1 frase de por qué ese servicio es el adecuado para el tipo de problema/idea]. Si es un problema complejo, podrías añadir: 'y podríamos complementarlo con nuestra experiencia en [Otro Servicio relevante de G-VOLUTION, DEBE SER EXACTAMENTE UNO DE: ${serviciosGvolution.join(", ")}] para [breve justificación]'."
+5.  **siguientePaso**: Llamada a la acción: "Te invito a explorar más a fondo nuestros servicios en esta página o a contactarnos directamente a través del formulario de abajo para una consulta personalizada y descubrir cómo G-VOLUTION puede ser tu aliado estratégico."`;
+
+            let chatHistory = [
+                { role: "user", parts: [{ text: systemInstruction }] },
+                { role: "model", parts: [{ text: "Entendido. Estoy listo para recibir la información del usuario y proporcionar una respuesta estructurada en JSON como GVOL, el agente IA de G-VOLUTION, siguiendo el flujo conversacional y las especificaciones de formato solicitadas." }] },
+                { role: "user", parts: [{ text: `Nombre: ${userName}, Empresa: ${userCompany || 'No especificada'}, Problema/Idea: "${userProblem}"` }] }
+            ];
+            
+            const schema = {
+                type: "OBJECT",
+                properties: {
+                    "saludoGvol": { "type": "STRING" },
+                    "comprensionProblema": { "type": "STRING" },
+                    "ideasGenerales": { "type": "STRING" },
+                    "conexionServicios": { "type": "STRING" },
+                    "siguientePaso": { "type": "STRING" }
+                },
+                required: ["saludoGvol", "comprensionProblema", "ideasGenerales", "conexionServicios", "siguientePaso"]
+            };
+
+            const payload = {
+                contents: chatHistory,
+                generationConfig: {
+                    responseMimeType: "application/json",
+                    responseSchema: schema
+                }
+            };
+            const apiKey = "AIzaSyDp5Mkhk5yPOmTRRPmDEhgRC96ESE--Vqs"; 
+            const apiUrl = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=' + apiKey;
+            
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    console.error('Error de la API de Gemini:', errorData);
+                    throw new Error('Error de la API: ' + response.status + ' ' + response.statusText);
+                }
+
+                const result = await response.json();
+                
+                if (result.candidates && result.candidates.length > 0 &&
+                    result.candidates[0].content && result.candidates[0].content.parts &&
+                    result.candidates[0].content.parts.length > 0) {
+                    
+                    const jsonResponseString = result.candidates[0].content.parts[0].text;
+                    try {
+                        const iaResponse = JSON.parse(jsonResponseString);
+                        let htmlOutput = `<p>${iaResponse.saludoGvol || `Hola ${userName}, mi nombre es GVOL y soy el agente IA de G-VOLUTION, ¡listo para ayudarte!`}</p>`;
+                        htmlOutput += `<p>${iaResponse.comprensionProblema || `Analizando tu consulta sobre "${userProblem}"...`}</p>`;
+                        htmlOutput += `<p>${iaResponse.ideasGenerales || 'Estamos procesando algunas ideas generales para ti...'}</p>`;
+                        
+                        let conexionServiciosHtml = iaResponse.conexionServicios || 'Nuestros servicios podrían ser de gran ayuda.';
+                        serviciosGvolution.forEach(servicio => {
+                            const regex = new RegExp(servicio.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi'); 
+                            conexionServiciosHtml = conexionServiciosHtml.replace(regex, '<strong>$&</strong>');
+                        });
+                        htmlOutput += `<p>${conexionServiciosHtml}</p>`;
+                        
+                        htmlOutput += `<p class="mt-4">${iaResponse.siguientePaso || 'Te invito a contactarnos para explorar esto más a fondo.'}</p>`;
+                        
+                        const contactButtonContainer = document.createElement('div');
+                        contactButtonContainer.className = 'mt-6 text-center';
+                        const contactButton = document.createElement('a');
+                        contactButton.href = '#contacto';
+                        contactButton.className = 'nav-link accent-bg text-white text-md font-semibold py-2 px-6 rounded-full hover:bg-blue-600 transition duration-300 transform hover:scale-105 inline-flex items-center'; 
+                        contactButton.innerHTML = 'Contactar para Asesoría <span class="ml-2">→</span>';
+                        
+                        contactButton.addEventListener('click', function(event) { 
+                            event.preventDefault();
+                            const targetId = this.getAttribute('href').substring(1);
+                            handleNavigation(targetId); 
+                            
+                            const nombreContacto = document.getElementById('nombre');
+                            const asuntoContacto = document.getElementById('asunto');
+                            const mensajeContacto = document.getElementById('mensaje');
+
+                            if(nombreContacto) nombreContacto.value = userName;
+                            
+                            let asuntoTexto = `Consulta IA: ${userProblem.substring(0, 30)}...`;
+                            if(userCompany) asuntoTexto += ` (${userCompany})`;
+                            if(asuntoContacto) asuntoContacto.value = asuntoTexto;
+
+                            if(mensajeContacto) {
+                                mensajeContacto.value = `Hola G-VOLUTION,\n\nDespués de usar la demo de IA con GVOL, estoy interesado/a en discutir cómo su servicio de "${iaResponse.servicioSugerido || 'consultoría'}" podría ayudarme con mi desafío: "${userProblem}".\n\nEmpresa: ${userCompany || 'No especificada'}\n\nGracias,\n${userName}`;
+                            }
+                        });
+                                                
+                        iaSuggestionsOutput.innerHTML = htmlOutput; 
+                        iaSuggestionsOutput.appendChild(contactButtonContainer); 
+                        contactButtonContainer.appendChild(contactButton); 
+
+
+                    } catch (parseError) {
+                        console.error('Error al parsear la respuesta JSON de Gemini:', parseError);
+                        console.error('String JSON recibido:', jsonResponseString);
+                        iaSuggestionsOutput.innerHTML = '<p class="italic text-red-400">Hubo un problema al procesar la respuesta de la IA. La respuesta no fue un JSON válido.</p>';
+                    }
+                } else {
+                    console.error('Respuesta inesperada o vacía de la API de Gemini:', result);
+                    iaSuggestionsOutput.innerHTML = '<p class="italic text-red-400">No se pudieron generar ideas en este momento. Intenta de nuevo más tarde o reformula tu consulta.</p>';
+                }
+
+            } catch (error) {
+                console.error('Error al llamar a la API de Gemini:', error);
+                iaSuggestionsOutput.innerHTML = '<p class="italic text-red-400">Ocurrió un error al generar las ideas: ' + error.message + '. Por favor, revisa la consola para más detalles.</p>';
+            } finally {
+                iaLoader.classList.add('hidden');
+                generateIdeasButton.disabled = false;
+                generateIdeasButton.classList.remove('opacity-50', 'cursor-not-allowed');
+            }
+        });
+        // --- Fin Script Demo IA ---
+
+         // --- Script para Servicios Interactivos ---
+        const serviceCards = document.querySelectorAll('.service-card');
+
+        serviceCards.forEach(card => {
+            card.addEventListener('click', () => {
+                const details = card.querySelector('.service-details');
+                const icon = card.querySelector('.expand-icon');
+                const isCurrentlyExpanded = details.classList.contains('expanded');
+
+                serviceCards.forEach(otherCard => {
+                    if (otherCard !== card) {
+                        const otherDetails = otherCard.querySelector('.service-details');
+                        const otherIcon = otherCard.querySelector('.expand-icon');
+                        otherDetails.classList.remove('expanded');
+                        otherDetails.style.maxHeight = null; 
+                        otherCard.classList.remove('expanded'); 
+                        otherIcon.textContent = '+';
+                    }
+                });
+
+                if (isCurrentlyExpanded) {
+                    details.classList.remove('expanded');
+                    card.classList.remove('expanded');
+                    icon.textContent = '+';
+                    details.style.maxHeight = null;
+                } else {
+                    details.classList.add('expanded');
+                    card.classList.add('expanded');
+                    icon.textContent = '×'; 
+                    details.style.maxHeight = details.scrollHeight + "px";
+                }
+            });
+        });
+        // --- Fin Script Servicios Interactivos ---
+
+    </script>
+</body>
+</html>
